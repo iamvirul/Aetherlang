@@ -1,0 +1,5 @@
+test MainTest {
+    fn test_greet() {
+        assert_eq(greet("World"), "Hello, World!");
+    }
+}
