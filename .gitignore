@@ -1,0 +1,43 @@
+# Build output
+/target/
+/build/
+/dist/
+/out/
+
+# Dependencies
+/node_modules/
+/.cargo/
+/vendor/
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Compiled Aether files
+*.ath.bin
+*.ath.wasm
+*.ath.ir
+
+# Generated documentation
+/docs/_build/
+/site/
+
+# Environment variables
+.env
+.env.local
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Test coverage
+/coverage/
+/.nyc_output/
+
+# Temporary files
+*.log
+*.tmp
+/tmp/ 

@@ -1,0 +1,11 @@
+service HelloService {
+    @get("/hello")
+    endpoint greet(name: String): String {
+        return "Hello, \(name) from Aether!";
+    }
+
+    @get("/health")
+    endpoint healthCheck(): String {
+        return "OK";
+    }
+} 

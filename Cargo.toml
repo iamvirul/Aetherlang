@@ -1,0 +1,33 @@
+[package]
+name = "aether-lang"
+version = "0.1.0"
+edition = "2021"
+authors = ["Aether Language Team"]
+description = "A cloud-native programming language"
+license = "MIT"
+repository = "https://github.com/aetherlang/aether"
+
+[dependencies]
+clap = { version = "4.4", features = ["derive"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1.35", features = ["full"] }
+wasm-bindgen = "0.2"
+async-trait = "0.1"
+futures = "0.3"
+
+[dev-dependencies]
+pretty_assertions = "1.4"
+tempfile = "3.9"
+
+[[bin]]
+name = "aethc"
+path = "src/bin/aethc.rs"
+
+[[bin]]
+name = "aeth"
+path = "src/bin/aeth.rs"
+
+[lib]
+name = "aether"
+path = "src/lib.rs" 
