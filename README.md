@@ -1,8 +1,8 @@
-# 🌌 Aether Programming Language
+# Aether Programming Language
 
 Aether is a modern, cloud-native programming language designed for building scalable, distributed systems with elegant syntax and robust safety features.
 
-## 🚀 Features
+## Features
 
 - **Cloud-First Architecture**: Native support for cloud APIs, service discovery, and containerized deployments
 - **Object-Oriented Core**: First-class support for classes, inheritance, interfaces, and polymorphism
@@ -12,7 +12,7 @@ Aether is a modern, cloud-native programming language designed for building scal
 - **Modern Concurrency**: Async/await, actors, and reactive streams
 - **Security-Focused**: Language-level constructs for sandboxing and capability-based security
 
-## 🛠️ Getting Started
+## Getting Started
 
 ### Installation
 
@@ -38,21 +38,21 @@ service HelloService {
 aeth run hello.ath
 ```
 
-## 🧰 Tools
+## Tools
 
 - `aethc` - The Aether compiler
 - `aeth` - The Aether runtime and development tool
 - `aethpkg` - Package manager
 - `aethctl` - Deployment and cloud control tool
 
-## 📚 Documentation
+## Documentation
 
 Visit [docs.aetherlang.dev](https://docs.aetherlang.dev) for comprehensive documentation.
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
-## 📜 License
+## License
 
 Aether is released under the MIT License. See [LICENSE](LICENSE) for details. 

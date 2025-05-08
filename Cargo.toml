@@ -1,11 +1,11 @@
 [package]
 name = "aether-lang"
 version = "0.1.0"
-edition = "2021"
+edition = "2025"
 authors = ["Aether Language Team"]
 description = "A cloud-native programming language"
 license = "MIT"
-repository = "https://github.com/aetherlang/aether"
+repository = "https://github.com/iamvirul/Aetherlang.git"
 
 [dependencies]
 clap = { version = "4.4", features = ["derive"] }
