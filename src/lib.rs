@@ -1,5 +1,6 @@
 pub mod compiler;
 pub mod runtime;
+pub mod core;
 
 pub use compiler::Compiler;
 pub use runtime::Runtime;

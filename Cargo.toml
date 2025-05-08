@@ -24,6 +24,11 @@ tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 chrono = { version = "0.4", features = ["serde"] }
 toml = "0.8"
+colored = "2.0"
+jsonwebtoken = "9.2"
+rand = "0.8"
+base64 = "0.21"
+sha2 = "0.10"
 
 [dev-dependencies]
 pretty_assertions = "1.4"
