@@ -12,14 +12,65 @@ Aether is a modern, cloud-native programming language designed for building scal
 - **Modern Concurrency**: Async/await, actors, and reactive streams
 - **Security-Focused**: Language-level constructs for sandboxing and capability-based security
 
+## Installation
+
+### Pre-built Binaries
+
+You can download pre-built binaries for your operating system from our [GitHub Releases](https://github.com/iamvirul/Aetherlang/releases) page.
+
+#### Windows
+1. Download `aether-windows-x86_64.exe` from the latest release
+2. Rename it to `aeth.exe` (optional)
+3. Add the binary location to your PATH environment variable
+4. Open Command Prompt or PowerShell and run `aeth --version` to verify the installation
+
+#### macOS
+1. Download `aether-macos-x86_64` from the latest release
+2. Make it executable:
+   ```bash
+   chmod +x aether-macos-x86_64
+   ```
+3. Move it to a location in your PATH:
+   ```bash
+   sudo mv aether-macos-x86_64 /usr/local/bin/aeth
+   ```
+4. Verify the installation:
+   ```bash
+   aeth --version
+   ```
+
+#### Linux
+1. Download `aether-linux-x86_64` from the latest release
+2. Make it executable:
+   ```bash
+   chmod +x aether-linux-x86_64
+   ```
+3. Move it to a location in your PATH:
+   ```bash
+   sudo mv aether-linux-x86_64 /usr/local/bin/aeth
+   ```
+4. Verify the installation:
+   ```bash
+   aeth --version
+   ```
+
+### Building from Source
+
+If you prefer to build from source, you'll need Rust installed on your system:
+
+1. Install Rust from [https://rustup.rs/](https://rustup.rs/)
+2. Clone the repository:
+   ```bash
+   git clone https://github.com/iamvirul/Aetherlang.git
+   cd Aetherlang
+   ```
+3. Build the project:
+   ```bash
+   cargo build --release
+   ```
+4. The compiled binaries will be in `target/release/`
+
 ## Getting Started
-
-### Installation
-
-```bash
-# Coming soon
-curl -fsSL https://install.aetherlang.dev | sh
-```
 
 ### Hello World
 
