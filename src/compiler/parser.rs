@@ -29,8 +29,8 @@ pub enum ASTNode {
 
 #[derive(Debug)]
 pub struct Parameter {
-    name: String,
-    param_type: String,
+    pub name: String,
+    pub param_type: String,
 }
 
 pub struct Parser<'a> {
@@ -111,7 +111,7 @@ impl<'a> Parser<'a> {
 
         // Parse endpoint keyword and name
         self.expect(TokenType::Endpoint)?;
-        let name = match &self.current_token.token_type {
+        let _name = match &self.current_token.token_type {
             TokenType::Identifier(name) => name.clone(),
             _ => return Err("Expected endpoint name".to_string()),
         };
@@ -181,14 +181,16 @@ impl<'a> Parser<'a> {
     fn parse_return_statement(&mut self) -> Result<ASTNode, String> {
         self.expect(TokenType::Return)?;
         
-        let expr = match &self.current_token.token_type {
+        let expr = match &self.current_token.token_type.clone() {
             TokenType::StringLiteral(s) => {
+                let value = s.clone();
                 self.advance();
-                ASTNode::StringLiteral { value: s.clone() }
+                ASTNode::StringLiteral { value }
             }
             TokenType::Identifier(name) => {
+                let name = name.clone();
                 self.advance();
-                ASTNode::Identifier { name: name.clone() }
+                ASTNode::Identifier { name }
             }
             _ => return Err("Expected expression after return".to_string()),
         };

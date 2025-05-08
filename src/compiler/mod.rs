@@ -5,7 +5,7 @@ use std::fs;
 use std::path::Path;
 
 pub struct Compiler {
-    source: String,
+    pub source: String,
 }
 
 impl Compiler {

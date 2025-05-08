@@ -41,7 +41,8 @@ enum Commands {
     },
 }
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let cli = Cli::parse();
 
     match cli.command {
@@ -49,8 +50,8 @@ fn main() {
             println!("Running {} on port {}", input.display(), port);
             match aether::Compiler::from_file(&input) {
                 Ok(compiler) => {
-                    let aether = aether::Aether::new(compiler.source);
-                    if let Err(e) = aether.run() {
+                    let aether = aether::Aether::new(compiler.source).with_port(port);
+                    if let Err(e) = aether.run().await {
                         eprintln!("Runtime error: {}", e);
                         std::process::exit(1);
                     }
@@ -63,8 +64,27 @@ fn main() {
         }
         Commands::Init { name } => {
             println!("Initializing new project: {}", name);
-            // TODO: Implement project initialization
-            println!("Project initialization not yet implemented");
+            // Create project structure
+            let project_dir = PathBuf::from(&name);
+            if let Err(e) = std::fs::create_dir_all(&project_dir) {
+                eprintln!("Failed to create project directory: {}", e);
+                std::process::exit(1);
+            }
+
+            // Create example service
+            let example_service = format!(
+                "service {}Service {{\n    @get(\"/hello\")\n    endpoint greet(name: String): String {{\n        return \"Hello, \\(name) from {}!\";\n    }}\n}}\n",
+                name, name
+            );
+            if let Err(e) = std::fs::write(project_dir.join("main.ath"), example_service) {
+                eprintln!("Failed to create example service: {}", e);
+                std::process::exit(1);
+            }
+
+            println!("✨ Created new Aether project: {}", name);
+            println!("To get started:");
+            println!("  cd {}", name);
+            println!("  aeth run main.ath");
         }
         Commands::Build { optimize } => {
             println!("Building project{}", if optimize { " with optimization" } else { "" });

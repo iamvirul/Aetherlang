@@ -1,10 +1,13 @@
 pub mod compiler;
+pub mod runtime;
 
 pub use compiler::Compiler;
+pub use runtime::Runtime;
 
 /// The main entry point for the Aether language runtime
 pub struct Aether {
     compiler: Compiler,
+    port: u16,
 }
 
 impl Aether {
@@ -12,15 +15,21 @@ impl Aether {
     pub fn new(source: String) -> Self {
         Aether {
             compiler: Compiler::new(source),
+            port: 8080,
         }
     }
 
+    /// Set the port for the service
+    pub fn with_port(mut self, port: u16) -> Self {
+        self.port = port;
+        self
+    }
+
     /// Compile and run an Aether program
-    pub fn run(&self) -> Result<(), String> {
+    pub async fn run(&self) -> Result<(), String> {
         let ast = self.compiler.compile()?;
-        // TODO: Implement code generation and runtime execution
-        println!("AST: {:?}", ast);
-        Ok(())
+        let runtime = Runtime::new(ast, self.port);
+        runtime.start().await
     }
 }
 
@@ -28,8 +37,8 @@ impl Aether {
 mod tests {
     use super::*;
 
-    #[test]
-    fn test_hello_world() {
+    #[tokio::test]
+    async fn test_hello_world() {
         let source = r#"
             service HelloService {
                 @get("/hello")
@@ -39,7 +48,7 @@ mod tests {
             }
         "#.to_string();
 
-        let aether = Aether::new(source);
-        assert!(aether.run().is_ok());
+        let aether = Aether::new(source).with_port(8081);
+        assert!(aether.run().await.is_ok());
     }
 } 

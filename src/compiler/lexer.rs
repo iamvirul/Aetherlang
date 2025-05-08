@@ -16,6 +16,7 @@ pub enum TokenType {
     Try,
     Catch,
     Defer,
+    Return,
     
     // Symbols
     LeftBrace,
@@ -151,6 +152,7 @@ impl<'a> Lexer<'a> {
             "try" => TokenType::Try,
             "catch" => TokenType::Catch,
             "defer" => TokenType::Defer,
+            "return" => TokenType::Return,
             _ => TokenType::Identifier(identifier),
         };
 
