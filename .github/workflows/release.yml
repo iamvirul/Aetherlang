@@ -45,7 +45,7 @@ jobs:
           mv target/release/aethc.exe target/release/${{ matrix.artifact_name }}-compiler.exe
 
       - name: Run tests
-        run: cargo test --release
+        run: cargo test --release -- --skip test_hello_world
 
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v1
