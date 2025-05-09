@@ -1,5 +1,5 @@
-service my-serviceService {
-    @get("/hello")
+service balla{
+     @get("/hello")
     endpoint greet(name: String): String {
         return "Hello, \(name) from my-service!";
     }

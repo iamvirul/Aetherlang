@@ -1,6 +1,6 @@
 [package]
 name = "aether-lang"
-version = "0.1.0"
+version = "1.1.0"
 edition = "2021"
 authors = ["Aether Language Team"]
 description = "A cloud-native programming language"
