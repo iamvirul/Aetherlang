@@ -85,14 +85,17 @@ This removes the quarantine attribute, allowing the binary to run without trigge
 #### Linux
 1. Download `aeth` from the latest release
 2. Make it executable:
+   
    ```bash
    chmod +x aeth
    ```
-3. Move it to a location in your PATH:
+4. Move it to a location in your PATH:
+   
    ```bash
    sudo mv aeth /usr/local/bin/aeth
    ```
-4. Verify the installation:
+6. Verify the installation:
+   
    ```bash
    aeth --version
    ```
@@ -103,15 +106,17 @@ If you prefer to build from source, you'll need Rust installed on your system:
 
 1. Install Rust from [https://rustup.rs/](https://rustup.rs/)
 2. Clone the repository:
+   
    ```bash
    git clone https://github.com/iamvirul/Aetherlang.git
    cd Aetherlang
    ```
-3. Build the project:
+4. Build the project:
+   
    ```bash
    cargo build --release
    ```
-4. The compiled binaries will be in `target/release/`
+6. The compiled binaries will be in `target/release/`
 
 ## Getting Started
 
