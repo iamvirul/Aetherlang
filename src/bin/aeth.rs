@@ -242,10 +242,20 @@ async fn main() {
             }
             match aether::Compiler::from_file(&input) {
                 Ok(compiler) => {
-                    let aether = aether::Aether::new(compiler.source).with_port(port);
-                    if let Err(e) = aether.run().await {
-                        eprintln!("Runtime error: {}", e);
-                        std::process::exit(1);
+                    // Compile the source to get the AST
+                    match compiler.compile() {
+                        Ok(ast) => {
+                            // Create and start the runtime with the AST
+                            let runtime = aether::runtime::Runtime::new(ast, port);
+                            if let Err(e) = runtime.start().await {
+                                eprintln!("Runtime error: {}", e);
+                                std::process::exit(1);
+                            }
+                        }
+                        Err(e) => {
+                            eprintln!("Compilation error: {}", e);
+                            std::process::exit(1);
+                        }
                     }
                 }
                 Err(e) => {

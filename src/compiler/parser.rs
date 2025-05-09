@@ -1,6 +1,6 @@
 use super::lexer::{Lexer, Token, TokenType};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum ASTNode {
     Service {
         name: String,
@@ -27,7 +27,7 @@ pub enum ASTNode {
     },
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Parameter {
     pub name: String,
     pub param_type: String,

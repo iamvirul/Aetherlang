@@ -2,9 +2,11 @@ use axum::{
     routing::{get, post, put, delete},
     Router,
     response::Json,
+    extract::Query,
 };
+use std::collections::HashMap;
 use std::net::SocketAddr;
-use crate::compiler::parser::ASTNode;
+use crate::compiler::parser::{ASTNode, Parameter}; // Added Parameter
 use tower::ServiceBuilder;
 use tower_http::trace::TraceLayer;
 use tracing::info;
@@ -56,33 +58,64 @@ impl Runtime {
         let mut has_health_check = false;
 
         if let ASTNode::Service { endpoints, .. } = &self.ast {
-            for endpoint in endpoints {
-                if let ASTNode::Endpoint { path, method, body, .. } = endpoint {
+            for endpoint_ast in endpoints {
+                if let ASTNode::Endpoint { path, method, params, body, .. } = endpoint_ast {
                     if path == "/health" {
                         has_health_check = true;
                     }
 
-                    let path = path.clone();
-                    let response = if let ASTNode::Block { statements } = &**body {
-                        if let Some(ASTNode::ReturnStatement { expression }) = statements.first() {
-                            match &**expression {
-                                ASTNode::StringLiteral { value } => json!({ "data": value }),
-                                ASTNode::Identifier { name } => json!({ "data": name }),
-                                _ => json!({ "error": "Invalid return type" }),
-                            }
-                        } else {
-                            json!({ "error": "No return statement" })
-                        }
-                    } else {
-                        json!({ "error": "Invalid body" })
-                    };
+                    let current_path = path.clone();
+                    // Clone necessary AST parts for the handler
+                    let endpoint_params_ast: Vec<Parameter> = params.clone(); 
+                    let endpoint_body_ast: Box<ASTNode> = body.clone();
 
-                    let response = response.clone();
-                    router = router.route(&path, match method.as_str() {
-                        "get" => get(move || async move { Json(response.clone()) }),
-                        "post" => post(move || async move { Json(response.clone()) }),
-                        "put" => put(move || async move { Json(response.clone()) }),
-                        "delete" => delete(move || async move { Json(response.clone()) }),
+                    router = router.route(&current_path, match method.as_str() {
+                        "get" => {
+                            get(move |query_params: Query<HashMap<String, String>>| {
+                                let captured_endpoint_params = endpoint_params_ast.clone();
+                                let captured_body = endpoint_body_ast.clone();
+                                async move {
+                                    if let ASTNode::Block { statements } = *captured_body {
+                                        if let Some(ASTNode::ReturnStatement { expression }) = statements.first() {
+                                            match &**expression {
+                                                ASTNode::StringLiteral { value } => {
+                                                    let mut processed_value = value.clone();
+                                                    for ast_param in captured_endpoint_params {
+                                                        if let Some(param_val) = query_params.0.get(&ast_param.name) {
+                                                            // Construct the pattern \(name) directly
+                                                            let slash = "\\"; // Literal backslash
+                                                            let open_paren = "(";
+                                                            let close_paren = ")";
+                                                            let pattern_to_search = format!("{}{}{}{}", slash, open_paren, ast_param.name, close_paren);
+                                                            processed_value = processed_value.replace(&pattern_to_search, param_val);
+                                                        } else {
+                                                            // Parameter not found in query
+                                                            return Json(json!({ "error": format!("Missing required parameter: {}", ast_param.name) }));
+                                                        }
+                                                    }
+                                                    Json(json!({ "data": processed_value }))
+                                                }
+                                                ASTNode::Identifier { name } => {
+                                                    if let Some(param_val) = query_params.0.get(name) {
+                                                        Json(json!({ "data": param_val }))
+                                                    } else {
+                                                        Json(json!({ "error": format!("Identifier '{}' not found in query parameters", name) }))
+                                                    }
+                                                }
+                                                _ => Json(json!({ "error": "Invalid return type for dynamic processing" })),
+                                            }
+                                        } else {
+                                            Json(json!({ "error": "No return statement in endpoint body" }))
+                                        }
+                                    } else {
+                                        Json(json!({ "error": "Invalid endpoint body structure" }))
+                                    }
+                                }
+                            })
+                        },
+                        "post" => post(|| async { Json(json!({ "message": "POST not fully implemented for dynamic params yet" })) }),
+                        "put" => put(|| async { Json(json!({ "message": "PUT not fully implemented for dynamic params yet" })) }),
+                        "delete" => delete(|| async { Json(json!({ "message": "DELETE not fully implemented for dynamic params yet" })) }),
                         _ => get(|| async { Json(json!({ "error": "Method not supported" })) }),
                     });
                 }
@@ -118,4 +151,4 @@ impl Runtime {
 
         router
     }
-} 
+}
