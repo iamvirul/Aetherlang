@@ -23,35 +23,74 @@ Aether is a modern, cloud-native programming language designed for building scal
 You can download pre-built binaries for your operating system from our [GitHub Releases](https://github.com/iamvirul/Aetherlang/releases) page.
 
 #### Windows
-1. Download `aether-windows-x86_64.exe` from the latest release
+1. Download `aeth` from the latest release
 2. Rename it to `aeth.exe` (optional)
 3. Add the binary location to your PATH environment variable
 4. Open Command Prompt or PowerShell and run `aeth --version` to verify the installation
 
 #### macOS
-1. Download `aether-macos-x86_64` from the latest release
+1. Download `aeth` from the latest release
 2. Make it executable:
+   
    ```bash
-   chmod +x aether-macos-x86_64
+   chmod +x aeth
    ```
-3. Move it to a location in your PATH:
+4. Move it to a location in your PATH:
+   
    ```bash
-   sudo mv aether-macos-x86_64 /usr/local/bin/aeth
+   sudo mv aeth /usr/local/bin/aeth
    ```
-4. Verify the installation:
+6. Verify the installation:
    ```bash
    aeth --version
    ```
+  
+#### If macOS blocks the binary with a message like:
+
+> “aeth” cannot be opened because the developer cannot be verified.
+
+####  Do this step *before* or *after* verifying the installation:
+
+#### 1. **Manually allow the binary via Gatekeeper:**
+
+* Open **System Settings > Privacy & Security**
+* Scroll down to the **Security** section
+* You should see a message like “aeth was blocked…”
+* Click **“Allow Anyway”**
+
+Then run:
+
+```bash
+aeth
+```
+
+macOS may still block it. If so:
+
+#### 2. **Force open from Terminal:**
+
+```bash
+xattr -d com.apple.quarantine aeth
+```
+
+Then you can run:
+
+```bash
+aeth --version
+```
+
+This removes the quarantine attribute, allowing the binary to run without triggering Gatekeeper.
+
+---
 
 #### Linux
-1. Download `aether-linux-x86_64` from the latest release
+1. Download `aeth` from the latest release
 2. Make it executable:
    ```bash
-   chmod +x aether-linux-x86_64
+   chmod +x aeth
    ```
 3. Move it to a location in your PATH:
    ```bash
-   sudo mv aether-linux-x86_64 /usr/local/bin/aeth
+   sudo mv aeth /usr/local/bin/aeth
    ```
 4. Verify the installation:
    ```bash
