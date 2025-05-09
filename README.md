@@ -1,5 +1,9 @@
 # Aether Programming Language
 
+<div align="center">
+  <img src="./aether-logo.png" alt="Aetherlang Logo" width="200" style="border-radius:15px;">
+</div>
+
 Aether is a modern, cloud-native programming language designed for building scalable, distributed systems with elegant syntax and robust safety features.
 
 ## Features
@@ -88,6 +92,13 @@ service HelloService {
 ```bash
 aeth run hello.ath
 ```
+
+## VS Code Extension
+
+Enhance your Aetherlang development experience with our dedicated VS Code extension. It provides syntax highlighting and other language features.
+
+- **Download the latest version:** [Aetherlang VS Code Extension (aetherlang-1.0.2.vsix)](./aetherlang-vscode-extension/aetherlang-1.0.2.vsix)
+- For installation instructions and more details, see the [extension's README](./aetherlang-vscode-extension/README.md).
 
 ## Tools
 
