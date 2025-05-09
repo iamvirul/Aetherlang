@@ -1,7 +1,7 @@
 # Aether Programming Language
 
-<div align="center">
-  <img src="./aether-logo.png" alt="Aetherlang Logo" width="200" style="border-radius:15px;">
+<div align="left" >
+  <img src="./aether-logo.png" alt="Aetherlang Logo" width="200" >
 </div>
 
 Aether is a modern, cloud-native programming language designed for building scalable, distributed systems with elegant syntax and robust safety features.
