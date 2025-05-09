@@ -1,0 +1,46 @@
+{
+  "name": "aetherlang",
+  "displayName": "Aetherlang",
+  "description": "VS Code support for the Aetherlang language.",
+  "version": "1.0.2",
+  "icon": "assets/aether-logo.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iamvirul/Aetherlang.git"
+  },
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "aetherlang",
+      "aliases": ["Aetherlang", "aetherlang"],
+      "extensions": [".ath"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "aetherlang",
+      "scopeName": "source.aetherlang",
+      "path": "./syntaxes/aetherlang.tmLanguage.json"
+    }],
+    "iconThemes": [
+      {
+        "id": "aetherlang-icons",
+        "label": "Aetherlang Icons",
+        "path": "./aetherlang-file-icons.json"
+      }
+    ]
+  },
+  "files": [
+    "LICENSE",
+    "language-configuration.json",
+    "package.json",
+    "syntaxes/",
+    "assets/",
+    "aetherlang-file-icons.json",
+    "README.md"
+  ]
+}

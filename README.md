@@ -98,7 +98,10 @@ aeth run hello.ath
 
 ## Documentation
 
-Visit [docs.aetherlang.dev](https://docs.aetherlang.dev) for comprehensive documentation.
+Documentation is coming soon.
+We're working hard to provide you with comprehensive guides and references.
+
+Stay tuned for updates!
 
 ## Contributing
 

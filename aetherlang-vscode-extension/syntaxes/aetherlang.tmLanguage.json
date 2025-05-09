@@ -1,0 +1,77 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Aetherlang",
+  "scopeName": "source.aetherlang",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#keywords" },
+    { "include": "#strings" },
+    { "include": "#annotations" },
+    { "include": "#types" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.block.aetherlang",
+          "begin": "{-",
+          "end": "-}",
+          "captures": {
+            "0": { "name": "punctuation.definition.comment.aetherlang" }
+          }
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.aetherlang",
+          "match": "\\b(service|endpoint|return|test|fn)\\b"
+        }
+      ]
+    },
+    "strings": {
+      "name": "string.quoted.double.aetherlang",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        { "name": "constant.character.escape.aetherlang", "match": "\\\\." },
+        {
+          "name": "variable.interpolation.aetherlang",
+          "begin": "\\\\\\(",
+          "end": "\\)",
+          "captures": {
+            "0": { "name": "punctuation.section.embedded.begin.aetherlang" },
+            "1": { "name": "punctuation.section.embedded.end.aetherlang" }
+          }
+        }
+      ]
+    },
+    "annotations": {
+      "patterns": [
+        {
+          "name": "meta.annotation.aetherlang",
+          "begin": "@",
+          "end": "(?:\\s|\\()",
+          "beginCaptures": {
+            "0": { "name": "punctuation.decorator.aetherlang" }
+          },
+          "endCaptures": {
+            "0": { "name": "punctuation.decorator.aetherlang"}
+          },
+          "patterns": [
+            { "name": "entity.name.function.decorator.aetherlang", "match": "[a-zA-Z_][a-zA-Z0-9_]*"}
+          ]
+        }
+      ]
+    },
+    "types": {
+        "patterns": [
+            {
+                "name": "storage.type.aetherlang",
+                "match": "\\b(String)\\b" 
+            }
+        ]
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "iconDefinitions": {
+    "_aetherlang_file": {
+      "iconPath": "./assets/aether-extention.png"
+    }
+  },
+  "fileExtensions": {
+    "ath": "_aetherlang_file"
+  },
+  "languageIds": {
+    "aetherlang": "_aetherlang_file"
+  }
+}
