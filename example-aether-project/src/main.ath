@@ -1,4 +1,4 @@
-service balla{
+service myService{
      @get("/hello")
     endpoint greet(name: String): String {
         return "Hello, \(name) from my-service!";
