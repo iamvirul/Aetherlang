@@ -28,7 +28,7 @@ For seamless integration with popular icon themes (like Material Icon Theme, Set
 
 ## Installation
 
-1.  Download the `.vsix` file from the [releases page](YOUR_GITHUB_RELEASES_PAGE_URL_HERE) (or wherever you distribute it).
+1.  Download the `.vsix` file from the [releases page](https://github.com/iamvirul/Aetherlang/releases/tag/v1.1.0).
 2.  In VS Code, open the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P`).
 3.  Run the command "Extensions: Install from VSIX...".
 4.  Select the downloaded `.vsix` file.
