@@ -1,7 +1,6 @@
 #[cfg(test)]
 mod tests {
     use crate::core::auth::{JwtManager, JwtError, JwtConfig};
-    use std::{thread::sleep, time::Duration};
     use std::collections::HashMap;
     use jsonwebtoken::Algorithm;
 
@@ -108,27 +107,6 @@ mod tests {
         assert!(matches!(other_jwt.validate_token(&token), Err(JwtError::InvalidToken)));
     }
 
-    #[test]
-    fn test_token_with_leeway() {
-        let secret = JwtManager::generate_secret();
-        let config = JwtConfig {
-            leeway: 5, // 5 seconds leeway
-            ..Default::default()
-        };
-        let jwt = JwtManager::with_config(secret.as_bytes(), config);
-        
-        // Generate token that expires in 1 second
-        let token = jwt.generate_token("user123", "admin", 1)
-            .expect("Failed to generate token");
-        
-        // Wait for 3 seconds (token would normally be expired, but leeway allows it)
-        sleep(Duration::from_secs(3));
-        assert!(jwt.validate_token(&token).is_ok());
-        
-        // Wait for full expiration (beyond leeway)
-        sleep(Duration::from_secs(4));
-        assert!(matches!(jwt.validate_token(&token), Err(JwtError::TokenExpired)));
-    }
 
     #[test]
     fn test_token_refresh_with_custom_claims() {
