@@ -11,6 +11,6 @@ service HelloService {
 
     @get("/version")
     endpoint version(): String {
-        return "Aether v0.1.0";
+        return "Aether v1.1.0";
     }
 } 
