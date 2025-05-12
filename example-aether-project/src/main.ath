@@ -1,6 +1,6 @@
 service myService{
      @get("/hello")
     endpoint greet(name: String): String {
-        return "Hello, \(name) from my-service!";
+        return "Hello, \(name) from my-service! v1.1.0";
     }
 }
