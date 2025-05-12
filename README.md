@@ -203,4 +203,4 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ## License
 
-Aether is released under the MIT License. See [LICENSE](LICENSE) for details. 
+Licensed under the Aetherlang License (Non-Commercial) — see [LICENSE](./LICENSE) for details.
