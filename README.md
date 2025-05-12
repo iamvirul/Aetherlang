@@ -118,6 +118,26 @@ If you prefer to build from source, you'll need Rust installed on your system:
    ```
 6. The compiled binaries will be in `target/release/`
 
+### Using the Docker Image
+
+You can use the pre-built Docker image to run Aetherlang without needing to install Rust or any dependencies.
+
+1.  **Pull the image from GitHub Container Registry:**
+
+    ```bash
+    docker pull ghcr.io/iamvirul/aether-lang:latest
+    ```
+
+2.  **Run the image:**
+
+    To run the Aetherlang runtime, mount your project directory to the `/app` directory inside the container.
+
+    ```bash
+    docker run -v $(pwd):/app ghcr.io/iamvirul/aether-lang:latest aeth run /app/your_service.ath
+    ```
+
+    Replace `your_service.ath` with the path to your Aetherlang service file.
+
 ## Getting Started
 
 ### Hello World

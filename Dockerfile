@@ -6,19 +6,9 @@ COPY Cargo.toml .
 COPY Cargo.lock .
 COPY src ./src
 
-RUN echo "Building at $(date)" > build_time.txt
-RUN cargo version
-RUN rustup update stable
-RUN cargo version
 RUN cargo build --release
 
-RUN echo "Building at $(date)" > build_time.txt
-RUN cargo version
-RUN rustup update stable
-RUN cargo version
-RUN cargo build --release
-
-FROM debian:bullseye-slim
+FROM ubuntu:latest
 
 WORKDIR /app
 
