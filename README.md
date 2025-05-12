@@ -106,17 +106,36 @@ If you prefer to build from source, you'll need Rust installed on your system:
 
 1. Install Rust from [https://rustup.rs/](https://rustup.rs/)
 2. Clone the repository:
-   
-   ```bash
-   git clone https://github.com/iamvirul/Aetherlang.git
-   cd Aetherlang
-   ```
+
+```bash
+git clone https://github.com/iamvirul/Aetherlang.git
+cd Aetherlang
+```
+
 4. Build the project:
-   
-   ```bash
-   cargo build --release
-   ```
+
+```bash
+cargo build --release
+```
+
 6. The compiled binaries will be in `target/release/`
+
+### Homebrew (macOS)
+
+If you're on macOS, you can install Aetherlang using Homebrew:
+
+1.  **Tap the repository:**
+
+    ```bash
+    brew tap iamvirul/aetherlang
+    ```
+
+2.  **Install Aetherlang:**
+
+    ```bash
+    brew install aetherlang
+    ```
+
 
 ### Using the Docker Image
 
