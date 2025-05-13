@@ -47,7 +47,7 @@ If an item is not applicable, you can mark it as N/A.
 - [ ] I have made corresponding changes to the documentation (if applicable).
 - [ ] My changes generate no new warnings.
 - [ ] I have added tests that prove my fix is effective or that my feature works.
-- ] All new and existing tests passed locally with my changes.
+- [ ] All new and existing tests passed locally with my changes.
 - [ ] Any dependent changes have been merged and published in downstream modules (if applicable).
 
 ## Screenshots (if applicable)
