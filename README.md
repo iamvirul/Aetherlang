@@ -127,7 +127,7 @@ If you're on macOS, you can install Aetherlang using Homebrew:
 1.  **Tap the repository:**
 
     ```bash
-    brew tap iamvirul/aetherlang
+    brew tap iamvirul/homebrew-aetherlang
     ```
 
 2.  **Install Aetherlang:**
