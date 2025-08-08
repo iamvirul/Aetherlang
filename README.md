@@ -1,4 +1,4 @@
-# Aether Programming Language
+# **Aether Programming Language**
 
 <div align="left" >
   <img src="./aether-logo.png" alt="Aetherlang Logo" width="200" >
