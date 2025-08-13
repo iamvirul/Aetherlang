@@ -1,0 +1,15 @@
+version: 2
+updates:
+  - package-ecosystem: "bundler"  # For Ruby gems (Gemfile/Gemfile.lock)
+    directory: "/"                # Looks for Gemfile in the root
+    schedule:
+      interval: "weekly"          # Checks for updates weekly
+    # Optional: Only allow updates for certain gems
+    # allow:
+    #   - dependency-name: "rails"
+    # Optional: Ignore specific gems or versions
+    # ignore:
+    #   - dependency-name: "rake"
+    #   - versions: ["13.0.0"]
+    # Open pull requests for version updates (default: true)
+    open-pull-requests-limit: 10  # Limits PRs to prevent spam
