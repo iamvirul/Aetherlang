@@ -5,6 +5,10 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+  pull-requests: read
+
 env:
   CARGO_TERM_COLOR: always
 
@@ -102,10 +106,12 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: read
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get version from tag
         id: tag
@@ -114,7 +120,15 @@ jobs:
       - name: Generate changelog
         id: changelog
         run: |
-          CHANGELOG=$(git log --pretty=format:"- %s" $(git describe --tags --abbrev=0 HEAD^)..HEAD | head -20)
+          if git describe --tags --abbrev=0 HEAD^ >/dev/null 2>&1; then
+            PREV_TAG=$(git describe --tags --abbrev=0 HEAD^)
+            CHANGELOG=$(git log --pretty=format:"- %s" $PREV_TAG..HEAD | head -20)
+          else
+            CHANGELOG=$(git log --pretty=format:"- %s" HEAD | head -20)
+          fi
+          if [ -z "$CHANGELOG" ]; then
+            CHANGELOG="- Initial release"
+          fi
           echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
           echo "$CHANGELOG" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
@@ -126,6 +140,8 @@ jobs:
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.tag.outputs.VERSION }}
           name: Release ${{ steps.tag.outputs.VERSION }}
