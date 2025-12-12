@@ -82,11 +82,8 @@ impl Runtime {
                                                     let mut processed_value = value.clone();
                                                     for ast_param in captured_endpoint_params {
                                                         if let Some(param_val) = query_params.0.get(&ast_param.name) {
-                                                            // Construct the pattern \(name) directly
-                                                            let slash = "\\"; // Literal backslash
-                                                            let open_paren = "(";
-                                                            let close_paren = ")";
-                                                            let pattern_to_search = format!("{}{}{}{}", slash, open_paren, ast_param.name, close_paren);
+                                                            // Construct the pattern (name) - lexer consumes the backslash
+                                                            let pattern_to_search = format!("({})", ast_param.name);
                                                             processed_value = processed_value.replace(&pattern_to_search, param_val);
                                                         } else {
                                                             // Parameter not found in query
