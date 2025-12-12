@@ -5,23 +5,53 @@ on:
     tags:
       - 'v*'
 
+env:
+  CARGO_TERM_COLOR: always
+
 jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo registry
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Run tests
+        run: cargo test --all-features
+
   build-and-release:
     name: Build and Release
+    needs: test
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         include:
           - os: ubuntu-latest
-            artifact_name: aether-linux
-            asset_name: aether-linux-x86_64
+            artifact_name: aether-linux-x86_64
+            binary_ext: ""
           - os: windows-latest
-            artifact_name: aether-windows
-            asset_name: aether-windows-x86_64.exe
+            artifact_name: aether-windows-x86_64
+            binary_ext: ".exe"
           - os: macos-latest
-            artifact_name: aether-macos
-            asset_name: aether-macos-x86_64
+            artifact_name: aether-macos-x86_64
+            binary_ext: ""
 
     steps:
       - uses: actions/checkout@v4
@@ -29,29 +59,117 @@ jobs:
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
 
+      - name: Cache cargo registry
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
       - name: Build Release Binary
         run: cargo build --release
 
-      - name: Rename binary (Unix)
-        if: matrix.os != 'windows-latest'
+      - name: Prepare artifacts
+        shell: bash
         run: |
-          mv target/release/aeth target/release/${{ matrix.artifact_name }}
-          mv target/release/aethc target/release/${{ matrix.artifact_name }}-compiler
+          mkdir -p release-artifacts
+          if [ "${{ matrix.os }}" = "windows-latest" ]; then
+            cp target/release/aeth${{ matrix.binary_ext }} release-artifacts/${{ matrix.artifact_name }}${{ matrix.binary_ext }}
+            cp target/release/aethc${{ matrix.binary_ext }} release-artifacts/${{ matrix.artifact_name }}-compiler${{ matrix.binary_ext }}
+          else
+            cp target/release/aeth release-artifacts/${{ matrix.artifact_name }}
+            cp target/release/aethc release-artifacts/${{ matrix.artifact_name }}-compiler
+            chmod +x release-artifacts/${{ matrix.artifact_name }}
+            chmod +x release-artifacts/${{ matrix.artifact_name }}-compiler
+          fi
 
-      - name: Rename binary (Windows)
-        if: matrix.os == 'windows-latest'
-        run: |
-          mv target/release/aeth.exe target/release/${{ matrix.artifact_name }}
-          mv target/release/aethc.exe target/release/${{ matrix.artifact_name }}-compiler.exe
-
-      - name: Run tests
-        run: cargo test --release -- --skip test_hello_world
-
-      - name: Upload Release Asset
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
         with:
+          name: ${{ matrix.artifact_name }}
+          path: release-artifacts/*
+          retention-days: 7
+
+  create-release:
+    name: Create GitHub Release
+    needs: [test, build-and-release]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get version from tag
+        id: tag
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          CHANGELOG=$(git log --pretty=format:"- %s" $(git describe --tags --abbrev=0 HEAD^)..HEAD | head -20)
+          echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.VERSION }}
+          name: Release ${{ steps.tag.outputs.VERSION }}
+          body: |
+            ## Changes in ${{ steps.tag.outputs.VERSION }}
+
+            ${{ steps.changelog.outputs.CHANGELOG }}
+
+            ## Installation
+
+            Download the appropriate binary for your platform from the assets below.
+
+            ### Linux
+            ```bash
+            curl -L https://github.com/${{ github.repository }}/releases/download/${{ steps.tag.outputs.VERSION }}/aether-linux-x86_64 -o aeth
+            chmod +x aeth
+            sudo mv aeth /usr/local/bin/
+            ```
+
+            ### macOS
+            ```bash
+            curl -L https://github.com/${{ github.repository }}/releases/download/${{ steps.tag.outputs.VERSION }}/aether-macos-x86_64 -o aeth
+            chmod +x aeth
+            sudo mv aeth /usr/local/bin/
+            ```
+
+            ### Windows
+            Download `aether-windows-x86_64.exe` and add it to your PATH.
           files: |
-            target/release/${{ matrix.artifact_name }}*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+            artifacts/**/*
+          draft: false
+          prerelease: ${{ contains(steps.tag.outputs.VERSION, '-') }}
+
+  # Optional: Publish to crates.io
+  # Uncomment this job if you want to automatically publish to crates.io
+  # publish-crates:
+  #   name: Publish to crates.io
+  #   needs: [test, build-and-release]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #
+  #     - name: Install Rust toolchain
+  #       uses: dtolnay/rust-toolchain@stable
+  #
+  #     - name: Publish to crates.io
+  #       run: cargo publish --token ${{ secrets.CRATES_IO_TOKEN }} 
